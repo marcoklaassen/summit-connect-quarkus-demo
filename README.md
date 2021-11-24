@@ -1,56 +1,68 @@
-# summit-demo Project
+# summit connect quarkus demo
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## Bootstrapping Quarkus Applications with quarkus cli
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+You can create new quarkus apps by using the [quarkus cli tool](https://quarkus.io/guides/cli-tooling).
 
-## Running the application in dev mode
+### Install Quarkus CLI
+`$ curl -Ls https://sh.jbang.dev | bash -s - app install --fresh --force quarkus@quarkusio`
 
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
+
+### Create new Quarkus app
+
+The execution of 
+
+`$ quarkus create app click.klaassen:summit-demo:1.0`
+
+should give an output like 
+
+```
+Looking for the newly published extensions in registry.quarkus.io
+-----------
+
+applying codestarts...
+📚  java
+🔨  maven
+📦  quarkus
+📝  config-properties
+🔧  dockerfiles
+🔧  maven-wrapper
+🚀  resteasy-codestart
+
+-----------
+[SUCCESS] ✅  quarkus project has been successfully generated in:
+--> /Users/mklaasse/Dev_RedHat/summit-connect-quarkus-demo/summit-demo
+-----------
+Navigate into this directory and get started: quarkus dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+### Add Extensions
 
-## Packaging and running the application
+For our reactive crud application we want to use the following quarkus extensions:
+* RESTEasy Reactive Jackson
+* Hibernate Reactive with Panache
+* Reactive PostgreSQL client
 
-The application can be packaged using:
-```shell script
-./mvnw package
+The execution of
+
+`$ quarkus ext add quarkus-resteasy-reactive-jackson quarkus-hibernate-reactive-panache quarkus-reactive-pg-client`
+
+should give an output like
+
 ```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: 
-```shell script
-./mvnw package -Pnative
+[SUCCESS] ✅  Extension io.quarkus:quarkus-resteasy-reactive-jackson has been installed
+[SUCCESS] ✅  Extension io.quarkus:quarkus-hibernate-reactive-panache has been installed
+[SUCCESS] ✅  Extension io.quarkus:quarkus-reactive-pg-client has been installed
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
+To avoid conflicts we have to remove the non-reactive RESTEasy extension which was added automatically while bootstrapping our application.
+
+The command `$ quarkus ext rm quarkus-resteasy` should do it for us with following output:
+
+```
+[SUCCESS] ✅  Extension io.quarkus:quarkus-resteasy has been uninstalled
 ```
 
-You can then execute your native executable with: `./target/summit-demo-1.0-runner`
+### Start Local Developer Environment
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
-
-## Provided Code
-
-### RESTEasy JAX-RS
-
-Easily start your RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+To start your local developer instance of quarkus app on your local machine use `$ quarkus dev`.

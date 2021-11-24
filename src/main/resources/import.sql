@@ -1,0 +1,2 @@
+INSERT INTO person(id, firstname, lastname) VALUES (nextval('hibernate_sequence'), 'Marco', 'Klaassen');
+INSERT INTO person(id, firstname, lastname) VALUES (nextval('hibernate_sequence'), 'Wanja', 'Pernath');

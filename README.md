@@ -63,6 +63,43 @@ The command `$ quarkus ext rm quarkus-resteasy` should do it for us with followi
 [SUCCESS] ✅  Extension io.quarkus:quarkus-resteasy has been uninstalled
 ```
 
+## Developer Experience
+
 ### Start Local Developer Environment
 
 To start your local developer instance of quarkus app on your local machine use `$ quarkus dev`.
+
+### Test API with curl
+
+* Create new person
+```
+$ curl -i --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"firstname":"iron", "lastname":"man"}' \
+  http://localhost:8080/persons
+```
+
+* List all persons
+```
+$ curl -i http://localhost:8080/persons
+```
+
+* Find person by id
+```
+$ curl -i http://localhost:8080/persons/1
+```
+
+* Update person
+```
+$ curl -i --header "Content-Type: application/json" \
+  --request PUT \
+  --data '{"firstname":"Foo", "lastname":"Bar"}' \
+  http://localhost:8080/persons/1
+```
+
+* Delete person
+```
+$ curl -i \
+  --request DELETE \
+  http://localhost:8080/persons/1
+```
